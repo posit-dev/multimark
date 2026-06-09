@@ -129,7 +129,7 @@ tags:
 
 # CLI Documentation
 # -----------------
-# cli:
-#   enabled: true              # Enable CLI documentation
-#   module: my_package.cli     # Module containing Click commands
-#   name: cli                  # Name of the Click command object
+cli:
+  enabled: true
+  module: multimark._cli
+  name: main
