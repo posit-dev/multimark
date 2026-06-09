@@ -1,4 +1,3 @@
-"""Smoke tests for XML renderer — structure, options, and edge cases."""
 from multimark import markdown_to_xml, Options
 
 

@@ -1,8 +1,3 @@
-"""Spec-driven tests: HTML rendering against the CommonMark specification.
-
-Tests all examples from spec.txt, smart_punct.txt, and regression.txt.
-Each example provides markdown input and expected HTML output.
-"""
 import pytest
 
 from multimark import markdown_to_html, Options

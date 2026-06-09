@@ -1,4 +1,3 @@
-"""Smoke tests for man page renderer — format-specific behavior and width parameter."""
 from multimark import markdown_to_man, Options
 
 

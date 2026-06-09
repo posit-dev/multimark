@@ -1,8 +1,3 @@
-"""Tests for thread safety.
-
-cmark should be safe to call from multiple threads simultaneously
-since each parse/render is independent (no shared mutable state).
-"""
 import concurrent.futures
 
 from multimark import (

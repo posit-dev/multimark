@@ -1,4 +1,3 @@
-"""Smoke tests for options, edge cases, and behavior the spec doesn't cover."""
 from multimark import markdown_to_html, Options
 
 

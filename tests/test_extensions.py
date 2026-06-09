@@ -1,4 +1,3 @@
-"""Tests for GFM extensions (table, strikethrough, autolink, tagfilter, tasklist)."""
 import pytest
 
 from multimark import markdown_to_html, markdown_to_latex, markdown_to_xml, VALID_EXTENSIONS

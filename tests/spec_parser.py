@@ -1,16 +1,3 @@
-"""Parser for CommonMark spec-format test fixtures.
-
-The spec format uses 32 backtick delimiters around examples:
-
-    ```````````````````````````````` example
-    markdown input
-    .
-    expected html output
-    ````````````````````````````````
-
-Section headings (# Heading) provide grouping context.
-The → character represents a literal tab.
-"""
 from __future__ import annotations
 
 import os

@@ -1,4 +1,3 @@
-"""Smoke tests for package-level API: version, imports, cmark_version."""
 from multimark import (
     markdown_to_html,
     markdown_to_latex,

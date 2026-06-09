@@ -1,8 +1,3 @@
-"""Comprehensive tests for parameter combinations.
-
-Exercises the cross-product of boolean flags, options, extensions, and width
-to verify correct interactions and absence of crashes.
-"""
 import itertools
 
 import pytest

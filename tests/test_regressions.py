@@ -1,10 +1,3 @@
-"""Regression tests derived from closed R commonmark issues.
-
-These ensure bugs reported against the R package don't affect multimark.
-Each test references the original GitHub issue for context.
-
-See: https://github.com/r-lib/commonmark/issues?q=is%3Aissue+state%3Aclosed
-"""
 import pytest
 
 from multimark import (
