@@ -1,0 +1,163 @@
+---
+title: "Command-Line Interface"
+guide-section: "Core Concepts"
+tags: [CLI, Tutorial]
+---
+
+Multimark includes a command-line tool for quick Markdown conversions without writing Python code. It reads from a file or stdin and writes the rendered output to stdout or a file.
+
+## Basic Usage
+
+The simplest invocation converts Markdown to HTML:
+
+```bash
+echo '# Hello **world**' | multimark
+```
+
+```html
+<h1>Hello <strong>world</strong></h1>
+```
+
+You can also pass a filename directly:
+
+```bash
+multimark README.md
+```
+
+## Choosing an Output Format
+
+Use the `-t` / `--to` flag to select the output format. The available formats are
+`html` (the default), `latex`, `man`, `commonmark`, and `xml`.
+
+```bash
+echo '# Hello' | multimark --to latex
+```
+
+```latex
+\section{Hello}
+```
+
+```bash
+echo '**bold** and *italic*' | multimark --to xml
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document SYSTEM "CommonMark.dtd">
+<document xmlns="http://commonmark.org/xml/1.0">
+  <paragraph>
+    <strong>
+      <text xml:space="preserve">bold</text>
+    </strong>
+    <text xml:space="preserve"> and </text>
+    <emph>
+      <text xml:space="preserve">italic</text>
+    </emph>
+  </paragraph>
+</document>
+```
+
+## Writing to a File
+
+Use `-o` / `--output` to write results to a file instead of stdout:
+
+```bash
+multimark README.md --to html -o README.html
+```
+
+## Enabling GFM Extensions
+
+GFM extensions are enabled with the `-e` / `--extension` flag. It can be repeated to
+enable multiple extensions at once.
+
+```bash
+echo '| A | B |\n|---|---|\n| 1 | 2 |' | multimark -e table
+```
+
+The available extensions are `autolink`, `strikethrough`, `table`, `tagfilter`, and
+`tasklist`.
+
+```bash
+multimark doc.md -e table -e strikethrough -e autolink
+```
+
+## Rendering Options
+
+Several flags control how the Markdown is parsed and rendered:
+
+| Flag | Effect |
+|------|--------|
+| `--smart` | Convert straight quotes to curly, `--` to en-dash, `---` to em-dash, `...` to ellipsis |
+| `--unsafe` | Allow raw HTML and potentially dangerous URLs to pass through |
+| `--hardbreaks` | Render soft line breaks as hard breaks |
+| `--sourcepos` | Add source position attributes (html and xml only) |
+| `--footnotes` | Enable footnote syntax |
+
+These can be combined freely:
+
+```bash
+echo '"Hello" -- world...' | multimark --smart
+```
+
+```html
+<p>\u201cHello\u201d \u2013 world\u2026</p>
+```
+
+```bash
+echo '<div>raw</div>' | multimark --unsafe
+```
+
+```html
+<div>raw</div>
+```
+
+## Reading from stdin
+
+When no file argument is provided, multimark reads from stdin. This makes it easy to
+use in shell pipelines:
+
+```bash
+curl -s https://example.com/README.md | multimark --to html > output.html
+```
+
+```bash
+cat doc.md | multimark --smart --to latex | tee output.tex
+```
+
+## Version
+
+Check the installed version with:
+
+```bash
+multimark --version
+```
+
+## Full Help
+
+```bash
+multimark --help
+```
+
+```
+Usage: multimark [OPTIONS] [FILE]
+
+  Convert CommonMark/GFM Markdown to various output formats.
+
+  Reads Markdown from FILE (or stdin if omitted) and writes the converted
+  output to stdout or the file specified by --output.
+
+Options:
+  -t, --to [html|latex|man|commonmark|xml]
+                                  Output format.
+  -o, --output FILENAME           Output file (stdout if omitted).
+  -e, --extension [autolink|strikethrough|table|tagfilter|tasklist]
+                                  Enable a GFM extension (repeatable).
+  --smart                         Use smart punctuation.
+  --unsafe                        Allow raw HTML and dangerous URLs.
+  --hardbreaks                    Render softbreaks as hard line breaks.
+  --sourcepos                     Include source position attributes (html/xml
+                                  only).
+  --footnotes                     Enable footnote parsing.
+  --version                       Show the version and exit.
+  --help                          Show this message and exit.
+```
