@@ -50,6 +50,11 @@ def test_unicode_passthrough():
 
 
 def test_empty_input():
+    """Empty string produces empty output."""
+    assert markdown_to_latex("") == ""
+
+
+def test_empty_input():
     assert markdown_to_latex("") == "\n"
 
 

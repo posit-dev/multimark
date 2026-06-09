@@ -138,3 +138,38 @@ class TestMetadata:
         assert result.exit_code == 0
         assert "Convert CommonMark/GFM" in result.output
         assert "--to" in result.output
+
+
+class TestWidth:
+    def test_width_latex(self, runner):
+        long_text = "word " * 50 + "\n"
+        result = runner.invoke(main, ["--to", "latex", "--width", "40"], input=long_text)
+        assert result.exit_code == 0
+        content_lines = [l for l in result.output.split("\n") if "word" in l]
+        assert all(len(l) <= 40 for l in content_lines)
+
+    def test_width_man(self, runner):
+        long_text = "word " * 50 + "\n"
+        result = runner.invoke(main, ["--to", "man", "--width", "60"], input=long_text)
+        assert result.exit_code == 0
+        content_lines = [l for l in result.output.split("\n") if "word" in l]
+        assert all(len(l) <= 60 for l in content_lines)
+
+    def test_width_commonmark(self, runner):
+        long_text = "word " * 50 + "\n"
+        result = runner.invoke(main, ["--to", "commonmark", "--width", "72"], input=long_text)
+        assert result.exit_code == 0
+        content_lines = [l for l in result.output.split("\n") if "word" in l]
+        assert all(len(l) <= 72 for l in content_lines)
+
+    def test_width_ignored_for_html(self, runner):
+        result = runner.invoke(main, ["--to", "html", "--width", "40"], input="hello\n")
+        assert result.exit_code == 0
+        assert "<p>hello</p>" in result.output
+
+    def test_width_default_no_wrap(self, runner):
+        long_text = "word " * 50 + "\n"
+        result = runner.invoke(main, ["--to", "latex"], input=long_text)
+        assert result.exit_code == 0
+        content_lines = [l for l in result.output.split("\n") if "word" in l]
+        assert any(len(l) > 80 for l in content_lines)

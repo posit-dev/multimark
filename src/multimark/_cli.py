@@ -51,6 +51,7 @@ RENDERERS = {
 @click.option("--hardbreaks", is_flag=True, help="Render softbreaks as hard line breaks.")
 @click.option("--sourcepos", is_flag=True, help="Include source position attributes (html/xml only).")
 @click.option("--footnotes", is_flag=True, help="Enable footnote parsing.")
+@click.option("--width", type=int, default=0, help="Wrap output at this column width (latex/man/commonmark only).")
 @click.version_option(__version__, prog_name="multimark")
 def main(
     file,
@@ -62,6 +63,7 @@ def main(
     hardbreaks: bool,
     sourcepos: bool,
     footnotes: bool,
+    width: int,
 ) -> None:
     """Convert CommonMark/GFM Markdown to various output formats.
 
@@ -82,6 +84,10 @@ def main(
     # sourcepos is only supported by html and xml renderers
     if format in ("html", "xml"):
         kwargs["sourcepos"] = sourcepos
+
+    # width is only supported by latex, man, and commonmark renderers
+    if format in ("latex", "man", "commonmark"):
+        kwargs["width"] = width
 
     result = renderer(text, **kwargs)
     output.write(result)

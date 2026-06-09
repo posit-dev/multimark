@@ -38,6 +38,18 @@ def test_sourcepos():
     assert "sourcepos=\"" in result
 
 
+def test_sourcepos_keyword():
+    """sourcepos=True adds sourcepos attributes (keyword form)."""
+    result = markdown_to_xml("Hello\n", sourcepos=True)
+    assert 'sourcepos="1:1-1:5"' in result
+
+
+def test_sourcepos_on_multiple_blocks():
+    """sourcepos is present on each block-level element."""
+    result = markdown_to_xml("# Title\n\nParagraph\n", sourcepos=True)
+    assert result.count('sourcepos="') >= 3  # document, heading, paragraph
+
+
 # --- Edge cases ---
 
 
