@@ -1,4 +1,3 @@
-"""CFFI build script — compiles the vendored cmark-gfm C library + extensions."""
 import os
 import glob
 from cffi import FFI

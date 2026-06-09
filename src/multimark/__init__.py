@@ -1,8 +1,3 @@
-"""multimark — Python bindings to the cmark-gfm CommonMark/GFM C library.
-
-Provides parsing and rendering of CommonMark and GitHub Flavored Markdown
-to HTML, LaTeX, groff man, XML, and normalized CommonMark.
-"""
 from enum import IntFlag
 from importlib.metadata import PackageNotFoundError, version as _get_version
 
