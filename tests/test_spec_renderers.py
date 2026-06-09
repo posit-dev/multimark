@@ -1,14 +1,3 @@
-"""Spec-driven tests: verify all renderers handle every spec example without error.
-
-For non-HTML renderers we don't have expected output from the spec, but we verify:
-1. No crashes or exceptions on any spec example
-2. Non-empty output for non-empty input
-3. Structural properties (XML well-formedness, LaTeX balanced envs)
-4. Width parameter doesn't break output
-5. Options (SOURCEPOS, SMART) don't crash
-6. CommonMark roundtrip: markdown → commonmark → HTML == markdown → HTML
-7. Determinism: same input always produces same output
-"""
 import re
 
 import pytest

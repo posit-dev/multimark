@@ -1,8 +1,3 @@
-"""Tests for pathological and adversarial inputs.
-
-These verify that cmark's protections against algorithmic complexity attacks
-and stack overflow are working correctly through our bindings.
-"""
 import pytest
 
 from multimark import (

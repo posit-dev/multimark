@@ -1,8 +1,3 @@
-"""Tests for error handling and type safety.
-
-Verify that our Python bindings raise clear errors for invalid inputs
-rather than segfaulting or producing undefined behavior.
-"""
 import pytest
 
 from multimark import (
