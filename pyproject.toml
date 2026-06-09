@@ -9,7 +9,7 @@ description = "Python bindings to cmark: CommonMark parsing and rendering (HTML,
 readme = "README.md"
 license = {text = "MIT AND BSD-2-Clause"}
 requires-python = ">=3.9"
-dependencies = ["cffi>=1.15"]
+dependencies = ["cffi>=1.15", "click>=8.0"]
 authors = [{name = "Rich Iannone"}]
 keywords = ["markdown", "commonmark", "cmark-gfm", "html", "latex", "gfm"]
 classifiers = [
@@ -26,6 +26,9 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Text Processing :: Markup :: Markdown",
 ]
+
+[project.scripts]
+multimark = "multimark._cli:main"
 
 [project.urls]
 Homepage = "https://github.com/posit-dev/multimark"
