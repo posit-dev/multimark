@@ -101,3 +101,74 @@ def test_newline_variations():
     """Handles different line ending styles."""
     assert markdown_to_html("hello\r\nworld\n") == markdown_to_html("hello\nworld\n")
 
+
+# --- GFM-specific Options flags ---
+
+
+def test_github_pre_lang():
+    """GITHUB_PRE_LANG adds language as a class on <pre> instead of <code>."""
+    md = "```python\ncode\n```\n"
+    result = markdown_to_html(md, options=Options.GITHUB_PRE_LANG)
+    assert 'lang="python"' in result or 'class="language-python"' in result.replace(
+        "<code", "<pre"
+    )
+    # Without the flag, language class is on <code>
+    default = markdown_to_html(md)
+    assert 'class="language-python"' in default
+
+
+def test_liberal_html_tag():
+    """LIBERAL_HTML_TAG allows non-standard HTML tags."""
+    result = markdown_to_html(
+        "<custom-element>text</custom-element>\n",
+        options=Options.LIBERAL_HTML_TAG | Options.UNSAFE,
+    )
+    assert "<custom-element>" in result
+
+
+def test_full_info_string():
+    """FULL_INFO_STRING preserves the full info string on code blocks."""
+    md = "```python extra-info\ncode\n```\n"
+    result = markdown_to_html(md, options=Options.FULL_INFO_STRING)
+    assert "extra-info" in result or "data-meta" in result
+
+
+def test_strikethrough_double_tilde():
+    """STRIKETHROUGH_DOUBLE_TILDE requires ~~ (not ~) for strikethrough."""
+    md_double = "~~deleted~~\n"
+    md_single = "~deleted~\n"
+    result_double = markdown_to_html(
+        md_double,
+        extensions=["strikethrough"],
+        options=Options.STRIKETHROUGH_DOUBLE_TILDE,
+    )
+    result_single = markdown_to_html(
+        md_single,
+        extensions=["strikethrough"],
+        options=Options.STRIKETHROUGH_DOUBLE_TILDE,
+    )
+    assert "<del>" in result_double
+    assert "<del>" not in result_single
+
+
+def test_table_prefer_style_attributes():
+    """TABLE_PREFER_STYLE_ATTRIBUTES uses style= instead of align=."""
+    md = "| left | center | right |\n|:-----|:------:|------:|\n| a | b | c |\n"
+    result = markdown_to_html(
+        md, extensions=["table"], options=Options.TABLE_PREFER_STYLE_ATTRIBUTES
+    )
+    assert "style=" in result
+
+
+# --- Footnotes keyword argument ---
+
+
+def test_footnotes_keyword():
+    """footnotes=True enables footnote parsing without extensions list."""
+    md = "Text[^1]\n\n[^1]: A footnote.\n"
+    result = markdown_to_html(md, footnotes=True)
+    assert "footnote" in result.lower()
+    # Without footnotes, the marker is treated as regular text
+    result_no = markdown_to_html(md, footnotes=False)
+    assert "[^1]" in result_no
+
