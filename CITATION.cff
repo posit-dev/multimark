@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: 'If you wish to cite the "nokap" package use:'
+type: software
+license: MIT
+title: "multimark provides Python bindings to cmark and allows for CommonMark parsing and rendering (HTML, LaTeX, man, XML)"
+version: "0.2.0"
+abstract:
+  multimark provides Python bindings to cmark, enabling CommonMark parsing and rendering to various formats
+  including HTML, LaTeX, man, and XML. A CLI is also provided for command-line usage. The package is designed to be fast,
+  efficient, and easy to use, making it a great choice for developers looking to work with CommonMark in Python.
+authors:
+  - family-names: Iannone
+    given-names: Rich
+    email: riannone@me.com
+    orcid: https://orcid.org/0000-0003-3925-190X
+repository-code: https://github.com/posit-dev/multimark
+url: https://posit-dev.github.io/multimark
+contact:
+  - family-names: Iannone
+    given-names: Rich
+    email: riannone@me.com
+    orcid: https://orcid.org/0000-0003-3925-190X
