@@ -93,6 +93,54 @@ The only valid extension names are: `"table"`, `"strikethrough"`, `"autolink"`, 
 7. All renderers return `str`, never `bytes`. Input must also be `str`.
 8. The `width` parameter is not available on `markdown_to_html()` or `markdown_to_xml()`.
 
+## CLI
+
+The package provides a `multimark` command (built with Click):
+
+```bash
+# Markdown from stdin to HTML on stdout (default)
+echo "# Hello" | multimark
+
+# File to HTML
+multimark README.md
+
+# Choose output format
+multimark --to latex README.md
+multimark --to man README.md
+multimark --to xml README.md
+multimark --to commonmark README.md
+
+# Write to a file
+multimark -o output.html README.md
+
+# Enable GFM extensions (repeatable -e flag)
+multimark -e table -e strikethrough README.md
+
+# Options
+multimark --smart --unsafe --hardbreaks --footnotes README.md
+multimark --sourcepos README.md          # html/xml only
+multimark --to latex --width 72 README.md  # latex/man/commonmark only
+
+# Version
+multimark --version
+```
+
+### CLI Options Reference
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--to FORMAT` | `-t` | Output format: `html` (default), `latex`, `man`, `commonmark`, `xml` |
+| `--output FILE` | `-o` | Write to FILE instead of stdout |
+| `--extension EXT` | `-e` | Enable a GFM extension (repeatable) |
+| `--smart` | | Typographic quotes, dashes, ellipses |
+| `--unsafe` | | Allow raw HTML passthrough |
+| `--hardbreaks` | | Render soft newlines as hard line breaks |
+| `--sourcepos` | | Add source position attributes (html/xml only) |
+| `--footnotes` | | Enable footnote parsing |
+| `--width N` | | Wrap at column N (latex/man/commonmark only; 0 = no wrap) |
+| `--version` | | Show version and exit |
+| `--help` | | Show help and exit |
+
 ## Best Practices
 
 - Prefer keyword arguments (`smart=True`) over the `Options` bitmask for common flags.
