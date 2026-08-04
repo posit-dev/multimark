@@ -15,6 +15,8 @@ from multimark._cmark import (
     cmark_version,
     VALID_EXTENSIONS,
 )
+from multimark._parser import Parser
+from multimark._node import Node, NodeType, ListType, DelimType, parse
 from multimark._binding import lib
 
 
