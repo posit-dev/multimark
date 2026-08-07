@@ -57,6 +57,29 @@ great-docs build
 great-docs preview
 ```
 
+### Testing Release Builds
+
+Before cutting a release, you can dry-run each part of the build pipeline using manually triggered workflows. These mirror the release CI but don't publish anything.
+
+From the GitHub Actions tab (or via `gh workflow run`):
+
+- **Test Wheel Build** (`test-build.yml`): builds native abi3 wheels on Linux, macOS, and Windows
+- **Test Pyodide Build** (`pyodide.yml`): builds the emscripten/WASM wheel for Pyodide
+- **Test Sdist Build** (`test-sdist.yml`): builds the source distribution
+
+```bash
+# Run all three in parallel
+gh workflow run test-build.yml
+gh workflow run pyodide.yml
+gh workflow run test-sdist.yml
+```
+
+You can also build the Pyodide wheel locally (requires Linux or macOS):
+
+```bash
+make dist-pyodide
+```
+
 ## Questions?
 
 Feel free to open an issue for questions or discussions about contributing.
