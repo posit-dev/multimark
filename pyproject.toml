@@ -46,7 +46,7 @@ multimark = ["*.h"]
 
 [tool.cibuildwheel.pyodide]
 test-requires = ["pytest"]
-test-command = "python -m pytest {project}/tests -x --ignore={project}/tests/test_cli.py"
+test-command = "python -m pytest {project}/tests -x --ignore={project}/tests/test_cli.py --ignore={project}/tests/test_threads.py"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
