@@ -1,0 +1,193 @@
+---
+title: "Parsing and AST"
+guide-section: "Core Concepts"
+tags: [Tutorial]
+---
+
+multimark exposes the full abstract syntax tree (AST) that cmark-gfm builds during
+parsing. This lets you inspect document structure, extract content, transform nodes,
+and render subtrees. This is all backed by the same C library that powers the renderers.
+
+## Parsing to an AST
+
+The `parse()` function takes a Markdown string and returns the root `Node` of the
+parsed tree.
+
+```{python}
+from multimark import parse, NodeType
+
+doc = parse("# Hello\n\nA paragraph with **bold** text.\n")
+doc
+```
+
+The root node is always a `DOCUMENT`. Its children are the top-level block elements.
+
+```{python}
+for child in doc.children:
+    print(child)
+```
+
+## Walking the Tree
+
+The `walk()` method performs a depth-first traversal, yielding `(event, node)` pairs.
+Container nodes produce both `"enter"` and `"exit"` events; leaf nodes produce only
+`"enter"`.
+
+```{python}
+for event, node in doc.walk():
+    if event == "enter":
+        print(f"{node.type_string:>15}  {node.literal or ''}")
+```
+
+This is the primary way to scan or transform a document. For example, extracting all
+links:
+
+```{python}
+md = "See [Python](https://python.org) and [Rust](https://rust-lang.org).\n"
+doc = parse(md)
+
+links = [
+    (node.url, node.first_child.literal)
+    for event, node in doc.walk()
+    if event == "enter" and node.type == NodeType.LINK
+]
+links
+```
+
+## Node Properties
+
+Each node type exposes relevant properties. Headings have a `heading_level`, links have
+`url` and `title`, code blocks have `fence_info`, and text nodes have `literal`.
+
+```{python}
+doc = parse("## Installation\n\nRun `pip install multimark`.\n")
+
+for event, node in doc.walk():
+    if event == "enter" and node.type == NodeType.HEADING:
+        print(f"Level {node.heading_level}: ", end="")
+        print(node.first_child.literal)
+```
+
+Source positions are available on every node:
+
+```{python}
+doc = parse("First paragraph.\n\nSecond paragraph.\n")
+
+for child in doc.children:
+    print(f"Lines {child.start_line}–{child.end_line}: {child.type_string}")
+```
+
+## Mutating the Tree
+
+Nodes support in-place mutation. You can change properties, add or remove nodes, and
+then render the modified tree.
+
+```{python}
+from multimark import Node
+
+doc = parse("Visit [example](http://example.com) for details.\n")
+
+for event, node in doc.walk():
+    if node.type == NodeType.LINK and node.url.startswith("http://"):
+        node.url = node.url.replace("http://", "https://", 1)
+
+print(doc.render_html())
+```
+
+You can also build nodes from scratch:
+
+```{python}
+doc = parse("Some content.\n")
+
+heading = Node.new(NodeType.HEADING)
+heading.heading_level = 2
+text = Node.new(NodeType.TEXT)
+text.literal = "Table of Contents"
+heading.append_child(text)
+doc.prepend_child(heading)
+
+print(doc.render_html())
+```
+
+## Rendering Subtrees
+
+Any node can render itself independently, which is useful for extracting fragments.
+
+```{python}
+doc = parse("# Title\n\nFirst paragraph.\n\nSecond paragraph.\n")
+
+second_para = list(doc.children)[2]
+print(second_para.render_html())
+```
+
+All five output formats are available: `render_html()`, `render_xml()`, `render_latex()`,
+`render_man()`, and `render_commonmark()`.
+
+## Streaming Parser
+
+For large documents or streamed input, the `Parser` class provides incremental feeding.
+
+```{python}
+from multimark import Parser
+
+parser = Parser(smart=True)
+parser.feed("# Chapter 1\n\n")
+parser.feed("Some text with \"quotes\" and -- dashes.\n")
+print(parser.render_html())
+```
+
+The `Parser` also works as a context manager for automatic resource cleanup, and its
+`finish()` method returns the root `Node` for AST access:
+
+```{python}
+with Parser(extensions=["table"]) as p:
+    p.feed("| A | B |\n|---|---|\n| 1 | 2 |\n")
+    doc = p.finish()
+    print(doc.render_html())
+```
+
+## GFM Extensions with the AST
+
+Extensions like tables, strikethrough, and task lists produce their own node types in
+the tree. These work with both `parse()` and `Parser`.
+
+```{python}
+doc = parse(
+    "- [x] Done\n- [ ] Pending\n",
+    extensions=["tasklist"],
+)
+
+for event, node in doc.walk():
+    if event == "enter":
+        print(f"{node.type_string}: {node.literal or ''}")
+```
+
+## Common Patterns
+
+### Extract all headings for a table of contents
+
+```{python}
+doc = parse("# Intro\n\n## Setup\n\n### Details\n\n## Usage\n")
+
+toc = []
+for event, node in doc.walk():
+    if event == "enter" and node.type == NodeType.HEADING:
+        level = node.heading_level
+        text = node.first_child.literal if node.first_child else ""
+        toc.append((level, text))
+
+toc
+```
+
+### Strip all formatting and extract plain text
+
+```{python}
+doc = parse("Hello **world**, visit [here](https://x.com).\n")
+
+texts = [
+    node.literal
+    for event, node in doc.walk()
+    if event == "enter" and node.type == NodeType.TEXT
+]
+" ".join(texts)
+```
