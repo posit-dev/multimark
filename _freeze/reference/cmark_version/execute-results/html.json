@@ -1,0 +1,12 @@
+{
+  "hash": "72822c07f9164470668ab21e040d798e",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"[cmark_version()]{.doc-object-name .doc-function .doc-label .doc-label-function}\"\nbody-classes: doc-api-page\npage-navigation: false\nhtml-table-processing: none\n---\n\n::: {.doc-subject}\n\nReturn the version string of the vendored cmark-gfm library.\n:::\n\n::: {.doc-usage-source}\nUsage\n\n[Source](https://github.com/posit-dev/multimark/blob/main/src/multimark/_cmark.py#L726-L746){target=\"_blank\" rel=\"noopener\"}\n:::\n\n::: {.doc-signature .doc-Kind.FUNCTION}\n```python\ncmark_version()\n```\n:::\n\n::: {.doc-text}\n\nReports the version of the bundled cmark-gfm C library that multimark was compiled\nagainst. This is useful for debugging or confirming which release of the underlying\nparser is in use.\n:::\n\n## Returns {.doc-returns}\n\n::: {.doc-definition-items}\n<code> [str]{.doc-parameter-annotation}</code>\n\n:   A version string in the format `\"X.Y.Z.gfm.N\"` (e.g., `\"0.29.0.gfm.13\"`).\n:::\n\n## Examples {.doc-examples}\n\n::: {#cb7f0531 .cell execution_count=1}\n``` {.python .cell-code}\nfrom multimark import cmark_version\n\ncmark_version()\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n```\n'0.29.0.gfm.13'\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "cmark_version_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

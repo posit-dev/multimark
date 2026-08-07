@@ -130,10 +130,10 @@ For large documents or streamed input, the `Parser` class provides incremental f
 ```{python}
 from multimark import Parser
 
-parser = Parser(smart=True)
-parser.feed("# Chapter 1\n\n")
-parser.feed("Some text with \"quotes\" and -- dashes.\n")
-print(parser.render_html())
+with Parser(smart=True) as p:
+    p.feed("# Chapter 1\n\n")
+    p.feed("Some text with \"quotes\" and -- dashes.\n")
+    print(p.render_html())
 ```
 
 The `Parser` also works as a context manager for automatic resource cleanup, and its

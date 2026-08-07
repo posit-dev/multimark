@@ -1,0 +1,12 @@
+{
+  "hash": "23b4bbb83cb1fc8c7866d80c35d6bec7",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"[Options]{.doc-object-name .doc-class .doc-label .doc-label-enum}\"\nbody-classes: doc-api-page\npage-navigation: false\nhtml-table-processing: none\n---\n\n::: {.doc-subject}\n\nCommonMark/GFM parsing and rendering options.\n:::\n\n::: {.doc-usage-source}\nUsage\n\n[Source](https://github.com/posit-dev/multimark/blob/main/src/multimark/__init__.py#L23-L80){target=\"_blank\" rel=\"noopener\"}\n:::\n\n::: {.doc-signature .doc-Kind.CLASS}\n```python\nOptions()\n```\n:::\n\n::: {.doc-text}\n\nAn `IntFlag` enumeration of all option flags supported by the cmark-gfm library.\nOptions can be combined using the bitwise OR operator (`|`) and passed to any\nrenderer's `options=` parameter. This provides a composable, lower-level alternative\nto the named boolean keyword arguments available on each renderer function.\n\nMost users will prefer the named keyword arguments (e.g., `smart=True`) for common\noptions. The `Options` bitmask is useful when you need to combine multiple flags\ninto a single reusable value, or when working with GFM-specific flags that do not\nhave dedicated keyword arguments.\n:::\n\n## Examples {.doc-examples}\n\nCombine multiple flags with the `|` operator:\n\n::: {#b5ca47ed .cell execution_count=1}\n``` {.python .cell-code}\nfrom multimark import markdown_to_html, Options\n\nopts = Options.SMART | Options.UNSAFE\nmarkdown_to_html('\"Hello\" -- world', options=opts)\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n```\n'<p>“Hello” – world</p>\\n'\n```\n:::\n:::\n\n\nMix a bitmask with named keyword arguments (they are OR'd together):\n\n::: {#8ca8a90d .cell execution_count=2}\n``` {.python .cell-code}\ntext = \"Here's some *text* to convert\"\nmarkdown_to_html(text, options=Options.SMART, footnotes=True)\n```\n\n::: {.cell-output .cell-output-display execution_count=2}\n```\n'<p>Here’s some <em>text</em> to convert</p>\\n'\n```\n:::\n:::\n\n\nUse GFM-specific flags that have no keyword shortcut:\n\n::: {#3ffb444e .cell execution_count=3}\n``` {.python .cell-code}\nmarkdown_to_html(\n    \"~~deleted~~\",\n    options=Options.STRIKETHROUGH_DOUBLE_TILDE,\n    extensions=[\"strikethrough\"],\n)\n```\n\n::: {.cell-output .cell-output-display execution_count=3}\n```\n'<p><del>deleted</del></p>\\n'\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "Options_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
