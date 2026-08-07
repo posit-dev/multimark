@@ -29,3 +29,9 @@ clean-test: ## remove test and coverage artifacts
 dist: clean ## builds source and wheel package
 	python3 -m build
 	ls -l dist
+
+.PHONY: dist-pyodide
+dist-pyodide: clean ## builds Pyodide/emscripten wheel (requires Linux or macOS)
+	pip install pyodide-build
+	pyodide build --outdir dist
+	ls -l dist
