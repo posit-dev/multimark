@@ -1,0 +1,26 @@
+name: Test Pyodide Build
+
+on:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build_pyodide:
+    name: Build Pyodide wheel
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: pyodide
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-pyodide
+          path: wheelhouse/*.whl
