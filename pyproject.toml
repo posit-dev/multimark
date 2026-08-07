@@ -58,6 +58,9 @@ archs = ["x86_64", "arm64"]
 archs = ["x86_64"]
 
 [tool.cibuildwheel.pyodide]
+build = "*"
+skip = ""
+before-build = ""
 test-requires = ["pytest"]
 test-command = "python -m pytest {project}/tests -x --ignore={project}/tests/test_cli.py --ignore={project}/tests/test_threads.py"
 
