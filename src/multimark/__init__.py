@@ -88,6 +88,12 @@ __all__ = [
     "markdown_to_xml",
     "cmark_version",
     "Options",
+    "Parser",
+    "parse",
+    "Node",
+    "NodeType",
+    "ListType",
+    "DelimType",
     "VALID_EXTENSIONS",
     "__version__",
 ]
