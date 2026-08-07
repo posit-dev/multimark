@@ -76,6 +76,16 @@ reference:
       - name: Options
         members: false
 
+  - title: Parsing
+    desc: Streaming parser, AST nodes, and tree traversal
+    contents:
+      - Parser
+      - parse
+      - Node
+      - NodeType
+      - ListType
+      - DelimType
+
   - title: Utility
     desc: Package information
     contents:
