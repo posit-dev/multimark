@@ -84,7 +84,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-pyodide
+          name: pyodide-wheel
           path: wheelhouse/*.whl
 
   build_sdist:
@@ -112,7 +112,7 @@ jobs:
 
   publish:
     name: Publish to PyPI
-    needs: [build_wheels, build_pyodide, build_sdist]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
