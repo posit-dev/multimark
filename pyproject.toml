@@ -57,7 +57,7 @@ archs = ["x86_64", "arm64"]
 archs = ["x86_64"]
 
 [tool.cibuildwheel.pyodide]
-build = "*"
+build = "cp313-*"
 skip = ""
 before-build = ""
 test-requires = ["pytest"]
