@@ -24,7 +24,6 @@ Built with cibuildwheel using `CIBW_PLATFORM=pyodide`. These allow multimark to 
 
 | Pyodide Version | Python | Emscripten | Wheel tag |
 |----------------|--------|------------|-----------|
-| 0.27.x | 3.12 | 3.1.58 | `cp39-abi3-pyodide_2024_0_wasm32` |
 | 0.29.x | 3.13 | 4.0.9 | `cp39-abi3-pyodide_2025_0_wasm32` |
 
 Threading and CLI tests are skipped under Pyodide (emscripten does not support pthreads or subprocesses).
