@@ -56,6 +56,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
       - name: Install cibuildwheel
         run: pip install cibuildwheel==2.23.4
 

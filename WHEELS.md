@@ -12,9 +12,11 @@ Built with cibuildwheel using the `cp39-abi3` tag.
 
 | Platform | Architectures | Wheel tag |
 |----------|--------------|-----------|
-| Linux (manylinux) | x86_64 | `cp39-abi3-manylinux_*_x86_64` |
+| Linux (manylinux/musllinux) | x86_64, aarch64 | `cp39-abi3-manylinux_*_{x86_64,aarch64}`, `cp39-abi3-musllinux_*_{x86_64,aarch64}` |
 | macOS | x86_64, arm64 | `cp39-abi3-macosx_*_x86_64`, `cp39-abi3-macosx_*_arm64` |
 | Windows | x86_64 | `cp39-abi3-win_amd64` |
+
+Linux aarch64 wheels are built and tested under QEMU on the x86_64 GitHub Actions runner.
 
 Skipped: 32-bit Windows (`win32`), 32-bit Linux (`manylinux_i686`), musl 32-bit (`musllinux_i686`).
 
