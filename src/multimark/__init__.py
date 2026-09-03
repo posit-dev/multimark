@@ -16,6 +16,7 @@ from multimark._cmark import (
     VALID_EXTENSIONS,
 )
 from multimark._parser import Parser
+from multimark._batch import markdown_to_html_batch
 from multimark._node import Node, NodeType, ListType, DelimType, parse
 from multimark._binding import lib
 
@@ -86,6 +87,7 @@ __all__ = [
     "markdown_to_man",
     "markdown_to_commonmark",
     "markdown_to_xml",
+    "markdown_to_html_batch",
     "cmark_version",
     "Options",
     "Parser",

@@ -34,6 +34,13 @@ const char *cmark_version_string(void);
 
 void free(void *ptr);
 
+/* multimark batch helpers (defined in _build_cmark.py set_source body).
+   Parse+render a whole batch in one C loop so the GIL is released once per
+   call instead of once per document. Each outputs[i] is a malloc'd C string
+   the caller must free(). Returns the number rendered, or -1 on failure. */
+int mm_render_html_batch(const char **inputs, size_t *lens, size_t n,
+                         int options, char **outputs);
+
 /* Tree traversal */
 cmark_node *cmark_node_next(cmark_node *node);
 cmark_node *cmark_node_previous(cmark_node *node);
