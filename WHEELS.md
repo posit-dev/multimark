@@ -22,7 +22,7 @@ Skipped: 32-bit Windows (`win32`), 32-bit Linux (`manylinux_i686`), musl 32-bit 
 
 ## Pyodide / WebAssembly Wheels
 
-Built with cibuildwheel 4.x using `CIBW_PLATFORM=pyodide`. They use the PEP 783 `pyemscripten` platform tag. These allow multimark to run in browser-based Python environments (Pyodide, JupyterLite, Shinylive).
+Built with cibuildwheel 4.x using `CIBW_PLATFORM=pyodide`, and published to PyPI with the native wheels. They use the PEP 783 `pyemscripten` platform tag, so `micropip.install("multimark")` finds them. These allow multimark to run in browser-based Python environments (Pyodide, JupyterLite, Shinylive).
 
 | Pyodide Version | Python | Emscripten | Wheel tag |
 |----------------|--------|------------|-----------|
@@ -31,6 +31,8 @@ Built with cibuildwheel 4.x using `CIBW_PLATFORM=pyodide`. They use the PEP 783 
 Pyodide 0.28/0.29 (Python 3.13) is a different ABI and is not built. Its `pyemscripten_2025_0` wheel would only install on Pyodide 0.29.4 and later, because earlier versions bundle a micropip older than 0.11.1, which does not recognise the `pyemscripten` tag.
 
 Threading and CLI tests are skipped under Pyodide (emscripten does not support pthreads or subprocesses). For the same reason, `markdown_to_html_batch(..., workers=N)` with `N > 1` raises `RuntimeError` under Pyodide. Leave `workers` unset there.
+
+The release's PyPI upload waits for the Pyodide build. If the Pyodide build or its tests fail, nothing is published, native wheels included.
 
 ## Source Distribution
 
