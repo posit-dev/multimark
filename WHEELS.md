@@ -63,4 +63,4 @@ gh workflow run test-sdist.yml
 
 ## Configuration
 
-All cibuildwheel settings live in `pyproject.toml` under `[tool.cibuildwheel]`. The release CI workflow (`ci.yml`) and local Makefile targets read from the same configuration.
+All cibuildwheel settings live in `pyproject.toml` under `[tool.cibuildwheel]`. The release CI workflow (`ci.yml`) and local Makefile targets read from the same configuration. Native wheels are built with cibuildwheel 2.23.4 and Pyodide wheels with 4.2.1.
