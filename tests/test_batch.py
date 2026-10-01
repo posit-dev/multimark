@@ -1,3 +1,7 @@
+import sys
+
+import pytest
+
 from multimark import markdown_to_html, markdown_to_html_batch
 
 
@@ -13,6 +17,11 @@ DOCS = [
 
 def _ref(docs, **kw):
     return [markdown_to_html(d, **kw) for d in docs]
+
+
+no_threads = pytest.mark.skipif(
+    sys.platform == "emscripten", reason="Emscripten cannot start threads"
+)
 
 
 def test_batch_matches_per_call():
@@ -32,6 +41,7 @@ def test_batch_options_parity():
         assert markdown_to_html_batch(DOCS, **kw) == _ref(DOCS, **kw), kw
 
 
+@no_threads
 def test_batch_workers_preserve_order():
     docs = [f"# Doc {i}\n\nParagraph {i}\n" for i in range(500)]
     ref = _ref(docs)
@@ -39,5 +49,6 @@ def test_batch_workers_preserve_order():
         assert markdown_to_html_batch(docs, workers=w) == ref, w
 
 
+@no_threads
 def test_batch_workers_more_than_docs():
     assert markdown_to_html_batch(DOCS, workers=64) == _ref(DOCS)

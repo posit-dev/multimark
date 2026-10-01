@@ -28,7 +28,7 @@ Built with cibuildwheel using `CIBW_PLATFORM=pyodide`. These allow multimark to 
 |----------------|--------|------------|-----------|
 | 0.29.x | 3.13 | 4.0.9 | `cp39-abi3-pyodide_2025_0_wasm32` |
 
-Threading and CLI tests are skipped under Pyodide (emscripten does not support pthreads or subprocesses).
+Threading and CLI tests are skipped under Pyodide (emscripten does not support pthreads or subprocesses). For the same reason, `markdown_to_html_batch(..., workers=N)` with `N > 1` raises `RuntimeError` under Pyodide. Leave `workers` unset there.
 
 ## Source Distribution
 
