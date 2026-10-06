@@ -32,7 +32,7 @@ Pyodide 0.28/0.29 (Python 3.13) is a different ABI and is not built. Its `pyemsc
 
 Threading and CLI tests are skipped under Pyodide (emscripten does not support pthreads or subprocesses). For the same reason, `markdown_to_html_batch(..., workers=N)` with `N > 1` raises `RuntimeError` under Pyodide. Leave `workers` unset there.
 
-The release's PyPI upload waits for the Pyodide build. If the Pyodide build or its tests fail, nothing is published, native wheels included.
+The Pyodide wheel is uploaded to PyPI in its own job, after the native wheels and sdist. If the Pyodide build, its tests, or its upload fail, the native release is still published.
 
 ## Source Distribution
 
