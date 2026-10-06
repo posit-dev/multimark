@@ -70,7 +70,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ matrix.os }}
+          name: wheels-native-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
   build_pyodide:
@@ -118,19 +118,37 @@ jobs:
 
   publish:
     name: Publish to PyPI
-    needs: [build_wheels, build_pyodide, build_sdist]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: wheels-*
+          pattern: wheels-native-*
           path: dist
           merge-multiple: true
 
       - uses: actions/download-artifact@v4
         with:
           name: sdist
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
+
+  # Uploaded separately so a Pyodide failure can't block the native release.
+  publish_pyodide:
+    name: Publish Pyodide wheel to PyPI
+    needs: [publish, build_pyodide]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-pyodide
           path: dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1
