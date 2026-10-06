@@ -38,8 +38,8 @@ dist-wheel: clean ## builds native abi3 wheel using cibuildwheel
 
 .PHONY: dist-pyodide
 dist-pyodide: clean ## builds Pyodide/emscripten wheel (requires Linux or macOS)
-	pip install pyodide-build
-	pyodide build --outdir dist
+	pip install cibuildwheel==4.2.1
+	python -m cibuildwheel --platform pyodide --output-dir dist
 	ls -l dist
 
 .PHONY: dist-sdist
@@ -50,8 +50,9 @@ dist-sdist: clean ## builds source distribution only
 
 .PHONY: dist-all
 dist-all: clean ## builds native wheel, Pyodide wheel, and sdist
-	pip install cibuildwheel==2.23.4 pyodide-build build
+	pip install cibuildwheel==2.23.4 build
 	python -m cibuildwheel --output-dir dist
-	pyodide build --outdir dist
+	pip install cibuildwheel==4.2.1
+	python -m cibuildwheel --platform pyodide --output-dir dist
 	python3 -m build --sdist --outdir dist
 	ls -l dist
