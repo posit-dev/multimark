@@ -256,6 +256,39 @@ class Parser:
         lib.free(result_ptr)
         return result
 
+    def render_plaintext(self, *, width: int = 0) -> str:
+        """Finish parsing (if needed) and render as readable plain text.
+
+        Uses the formatting rules of `markdown_to_plaintext`, including retained
+        list markers and omitted raw HTML.
+
+        Parameters
+        ----------
+        width
+            Approximate wrapping column (`0` = no automatic wrapping). Ignored
+            when this parser was created with `hardbreaks=True`.
+
+        Returns
+        -------
+        str
+            The rendered text, including a trailing newline.
+
+        Raises
+        ------
+        ValueError
+            If the parser is closed.
+        """
+        if self._parser == ffi.NULL:
+            raise ValueError("Parser is closed")
+        self._finish()
+        result_ptr = lib.cmark_render_plaintext(self._node, self._opts, width)
+        if result_ptr == ffi.NULL:
+            raise MemoryError("Failed to render document")
+        try:
+            return ffi.string(result_ptr).decode("utf-8", errors="replace")
+        finally:
+            lib.free(result_ptr)
+
     def close(self) -> None:
         """Release all C resources held by this parser.
 

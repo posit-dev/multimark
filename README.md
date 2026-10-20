@@ -11,7 +11,7 @@
 
 The **multimark** package has Python bindings to [cmark-gfm](https://github.com/github/cmark-gfm), the C reference implementation of [CommonMark](https://commonmark.org/) with GitHub Flavored Markdown extensions.
 
-Renders Markdown to **HTML**, **LaTeX**, **groff man**, **XML**, and **normalized CommonMark**: all from a single, lightweight package.
+Renders Markdown to **HTML**, **LaTeX**, **groff man**, **XML**, **normalized CommonMark**, and **plain text**: all from a single, lightweight package.
 
 ## Installation
 
@@ -41,7 +41,20 @@ latex = markdown_to_latex("**Hello**, *world*!")
 | `markdown_to_latex()` | LaTeX |
 | `markdown_to_man()` | groff man page |
 | `markdown_to_commonmark()` | Normalized CommonMark |
+| `markdown_to_plaintext()` | Readable plain text |
 | `markdown_to_xml()` | XML (AST representation) |
+
+```python
+from multimark import markdown_to_plaintext
+
+markdown_to_plaintext("**Hello**, *world*!")
+# 'Hello, world!\n'
+```
+
+Plaintext output preserves list markers, code contents, and image descriptions,
+but drops link destinations. GFM tables keep pipe syntax, task lists keep checkbox
+markers, and strikethrough uses single tildes. Raw HTML blocks (including their
+text) are omitted even with `unsafe=True`. Empty input returns `"\n"`.
 
 ## Options
 
@@ -62,7 +75,7 @@ markdown_to_html('<div>hi</div>', unsafe=True)
 markdown_to_html('**Hello**', sourcepos=True)
 # '<p data-sourcepos="1:1-1:9"><strong>Hello</strong></p>\n'
 
-# Line wrapping (LaTeX, man, and commonmark renderers)
+# Line wrapping (LaTeX, man, CommonMark, and plaintext renderers)
 markdown_to_latex('**Hello**, *world*!', width=80)
 # '\\textbf{Hello}, \\emph{world}!\n'
 
@@ -109,14 +122,18 @@ Every renderer accepts:
 - **`extensions`**: list of GFM extension names (default `()`)
 - **`smart`**: smart punctuation
 - **`hardbreaks`**: render soft breaks as `<br>`
-- **`unsafe`**: allow raw HTML
+- **`unsafe`**: allow raw HTML (no effect on plaintext output)
 - **`normalize`**: consolidate adjacent text nodes
 - **`footnotes`**: enable footnote syntax
 
 Additional parameters:
 
 - **`sourcepos`**: Source position attributes (HTML and XML only)
-- **`width`**: Line wrap column (LaTeX, man, and commonmark only; `0` = no wrap)
+- **`width`**: Line wrap column (LaTeX, man, CommonMark, and plaintext only; `0` = no wrap)
+
+For plaintext, `hardbreaks=True` disables width-based wrapping. With `width=0`,
+soft line breaks are preserved; a positive width reflows them as spaces before
+wrapping. Output whitespace and trailing newlines are retained.
 
 ## Why multimark?
 
@@ -125,14 +142,14 @@ Several Python packages wrap cmark or provide CommonMark parsing. Here's how the
 | | **multimark** | **[cmarkgfm](https://github.com/theacodes/cmarkgfm)** | **[commonmark.py](https://github.com/readthedocs/commonmark.py)** |
 |---|---|---|---|
 | Engine | cmark-gfm (C, vendored) | cmark-gfm (C, vendored) | Pure Python |
-| Output formats | HTML, LaTeX, man, XML, CommonMark | HTML only | HTML only |
+| Output formats | HTML, LaTeX, man, XML, CommonMark, plaintext | HTML only | HTML only |
 | GFM extensions | ✓ | ✓ | ✗ |
 | Safe by default | ✓ | ✓ | ✗ |
 | Convenience kwargs | `smart=True`, `unsafe=True`, etc. | Raw bitmask only | N/A |
 | Performance | **Fastest** (14% faster than cmarkgfm) | Fast | ~31× slower |
 | Maintained | Active (2026) | Active (2025) | Unmaintained (2019) |
 
-multimark uses the same battle-tested C library as `cmarkgfm` but exposes all five of cmark's output formats (not just HTML). The API is designed around keyword arguments rather than opaque bitmasks, and unsafe content is blocked by default so the safe choice requires no extra configuration.
+multimark uses the same battle-tested C library as `cmarkgfm` but exposes all six of cmark's output formats (not just HTML). The API is designed around keyword arguments rather than opaque bitmasks, and unsafe content is blocked by default so the safe choice requires no extra configuration.
 
 Thanks to extension pointer caching and reduced Python-side overhead, multimark is the **fastest Python Markdown-to-HTML library**. Take a look at the [benchmarks](https://posit-dev.github.io/multimark/user-guide/performance.html) for more detail on this.
 

@@ -120,8 +120,12 @@ second_para = list(doc.children)[2]
 print(second_para.render_html())
 ```
 
-All five output formats are available: `render_html()`, `render_xml()`, `render_latex()`,
-`render_man()`, and `render_commonmark()`.
+All six output formats are available: `render_html()`, `render_xml()`, `render_latex()`,
+`render_man()`, `render_commonmark()`, and `render_plaintext()`.
+
+```{python}
+print(second_para.render_plaintext())
+```
 
 ## Streaming Parser
 
@@ -134,6 +138,7 @@ with Parser(smart=True) as p:
     p.feed("# Chapter 1\n\n")
     p.feed("Some text with \"quotes\" and -- dashes.\n")
     print(p.render_html())
+    print(p.render_plaintext(width=72))
 ```
 
 The `Parser` also works as a context manager for automatic resource cleanup, and its
@@ -191,3 +196,14 @@ texts = [
 ]
 " ".join(texts)
 ```
+
+For comparison, render the same tree directly:
+
+```{python}
+doc.render_plaintext()
+```
+
+The manual approach collects only `TEXT` nodes and joins them with spaces. The
+renderer also includes code contents and preserves list markers and paragraph
+breaks. Some GFM markers remain, and raw HTML blocks are omitted including their
+text. See [Plain Text](04-output-formats.qmd#plain-text) for the full behavior.

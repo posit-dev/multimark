@@ -57,6 +57,11 @@ class TestOutputFormats:
         assert "<?xml" in result.output
         assert "<text" in result.output
 
+    def test_plaintext(self, runner):
+        result = runner.invoke(main, ["--to", "plaintext"], input="# **Title**\n")
+        assert result.exit_code == 0
+        assert result.output == "Title\n"
+
 
 class TestOptions:
     def test_smart(self, runner):
@@ -141,6 +146,15 @@ class TestMetadata:
 
 
 class TestWidth:
+    def test_width_plaintext(self, runner):
+        result = runner.invoke(
+            main, ["--to", "plaintext", "--width", "40"], input="word " * 50
+        )
+        assert result.exit_code == 0
+        lines = result.output.splitlines()
+        assert len(lines) > 1
+        assert all(len(line) <= 40 for line in lines)
+
     def test_width_latex(self, runner):
         long_text = "word " * 50 + "\n"
         result = runner.invoke(main, ["--to", "latex", "--width", "40"], input=long_text)

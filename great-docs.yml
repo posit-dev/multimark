@@ -25,7 +25,7 @@ logo:
 
 hero:
   name: false
-  tagline: "Python bindings to cmark: CommonMark parsing and rendering (HTML, LaTeX, man, XML)"
+  tagline: "Python bindings to cmark: CommonMark parsing and rendering (HTML, LaTeX, man, XML, CommonMark, plaintext)"
   logo_height: 120px
   badges: false
 
@@ -69,6 +69,7 @@ reference:
       - markdown_to_man
       - markdown_to_commonmark
       - markdown_to_xml
+      - markdown_to_plaintext
 
   - title: Options
     desc: Parsing and rendering configuration

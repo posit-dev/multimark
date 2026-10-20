@@ -6,6 +6,7 @@ from multimark import (
     markdown_to_man,
     markdown_to_commonmark,
     markdown_to_xml,
+    markdown_to_plaintext,
 )
 
 
@@ -18,6 +19,7 @@ def _render_all(doc_id: int) -> dict:
         "latex": markdown_to_latex(md),
         "man": markdown_to_man(md),
         "commonmark": markdown_to_commonmark(md),
+        "plaintext": markdown_to_plaintext(md),
         "xml": markdown_to_xml(md),
     }
 
@@ -36,6 +38,7 @@ def test_concurrent_rendering():
     for r in results:
         doc_id = r["id"]
         assert f"Document {doc_id}" in r["html"]
+        assert f"Document {doc_id}" in r["plaintext"]
         assert f"{doc_id}" in r["latex"]
         assert f"{doc_id}" in r["xml"]
 
@@ -61,6 +64,7 @@ def test_concurrent_mixed_renderers():
         markdown_to_latex,
         markdown_to_man,
         markdown_to_commonmark,
+        markdown_to_plaintext,
         markdown_to_xml,
     ]
 

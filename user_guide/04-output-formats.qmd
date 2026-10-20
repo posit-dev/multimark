@@ -4,11 +4,11 @@ guide-section: "Core Concepts"
 tags: [HTML, LaTeX, XML]
 ---
 
-This page explores the five output formats that multimark can produce from a single Markdown input, showing what each format looks like and when to reach for it.
+This page explores the six output formats that multimark can produce from a single Markdown input, showing what each format looks like and when to reach for it.
 
-## Five Renderers, One Parser
+## Six Renderers, One Parser
 
-All five output renderers share the same underlying parser. The Markdown is parsed once
+All six output renderers share the same underlying parser. The Markdown is parsed once
 into an abstract syntax tree (AST), and then a format-specific renderer walks the tree
 to produce output. This means that parsing behavior (extensions, options) is consistent
 regardless of which renderer you choose.
@@ -20,6 +20,7 @@ The renderers are:
 - `markdown_to_man()` for Unix manual pages
 - `markdown_to_xml()` for AST inspection
 - `markdown_to_commonmark()` for normalized Markdown
+- `markdown_to_plaintext()` for readable text
 
 Each is a standalone function that you call with a Markdown string and optional
 parameters.
@@ -180,6 +181,46 @@ print(f"Stable: {once == twice}")
 print(once)
 ```
 
+## Plain Text
+
+The plaintext renderer removes heading, emphasis, link, and code delimiters while
+retaining their text. It keeps paragraph separation, list markers, code contents,
+and image descriptions, but drops link destinations and image URLs.
+
+```{python}
+from multimark import markdown_to_plaintext
+
+doc = """\
+# Title
+
+**Bold** and *italic* with [a link](https://example.com).
+"""
+print(markdown_to_plaintext(doc))
+```
+
+This uses cmark-gfm's readable plaintext format, not strict removal of all markup:
+
+- GFM tables retain pipe-table syntax.
+- Task lists retain `[x]` and `[ ]` markers.
+- Strikethrough text is surrounded by single tildes, such as `~deleted~`.
+- Enabled footnotes retain numbered references and definitions.
+- Inline HTML tags are omitted; raw HTML blocks are omitted **including their text**.
+  `unsafe=True` does not change this behavior.
+
+Extensions remain opt-in through `extensions=`, as with other renderers. Output
+whitespace is not stripped, and empty input returns `"\n"`.
+
+### Line Wrapping
+
+`width=0` disables automatic wrapping and preserves soft line breaks. A positive
+width reflows soft line breaks as spaces and wraps text at approximately that column.
+Explicit hard line breaks remain newlines, and code blocks are never wrapped.
+`hardbreaks=True` disables width-based wrapping and preserves soft line breaks.
+
+```{python}
+print(markdown_to_plaintext("A paragraph with **bold** text. " * 5, width=60))
+```
+
 ## Choosing a Format
 
 The right renderer depends on your downstream pipeline. Here is a quick decision guide.
@@ -199,5 +240,8 @@ into an XML pipeline.
 
 **CommonMark** when you want to normalize formatting, enforce style consistency, or
 verify round-trip stability of your Markdown processing pipeline.
+
+**Plain text** when you want readable text without most Markdown formatting, while
+retaining lists and paragraph structure.
 
 :::

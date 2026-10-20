@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "multimark"
 dynamic = ["version"]
-description = "Python bindings to cmark: CommonMark parsing and rendering (HTML, LaTeX, man, XML)"
+description = "Python bindings to cmark: CommonMark parsing and rendering (HTML, LaTeX, man, XML, CommonMark, plaintext)"
 readme = "README.md"
 license = "MIT AND BSD-2-Clause"
 requires-python = ">=3.9"

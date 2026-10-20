@@ -1,4 +1,4 @@
-Fast Python bindings to [cmark-gfm](https://github.com/github/cmark-gfm), the C reference implementation of CommonMark with GitHub Flavored Markdown extensions. Render Markdown to five output formats from a single, lightweight package.
+Fast Python bindings to [cmark-gfm](https://github.com/github/cmark-gfm), the C reference implementation of CommonMark with GitHub Flavored Markdown extensions. Render Markdown to six output formats from a single, lightweight package.
 
 ## Install and Go
 
@@ -15,7 +15,7 @@ markdown_to_html("**Hello**, *world*!")
 # '<p><strong>Hello</strong>, <em>world</em>!</p>\n'
 ```
 
-## Five Output Formats
+## Six Output Formats
 
 | Function | Output |
 |----------|--------|
@@ -24,6 +24,7 @@ markdown_to_html("**Hello**, *world*!")
 | `markdown_to_man()` | groff man page |
 | `markdown_to_commonmark()` | Normalized CommonMark |
 | `markdown_to_xml()` | XML (AST) |
+| `markdown_to_plaintext()` | Readable plain text |
 
 Every renderer shares the same interface: pass a Markdown string, get formatted output back. No intermediate objects, no setup.
 
@@ -42,7 +43,7 @@ markdown_to_html(
 
 ## Safe by Default
 
-Raw HTML is stripped from output unless you explicitly opt in with `unsafe=True`. Smart punctuation, source position mapping, footnotes, and line wrapping are all one keyword argument away.
+The HTML renderer strips raw HTML unless you explicitly opt in with `unsafe=True`. The plaintext renderer always omits raw HTML. Smart punctuation, source position mapping, footnotes, and line wrapping are all one keyword argument away.
 
 ```python
 markdown_to_html('"Hello" -- world...', smart=True)

@@ -186,6 +186,29 @@ class TestParserRenderers:
         narrow = p.render_commonmark(width=40)
         assert "\n" in narrow
 
+    def test_render_plaintext(self):
+        with Parser(smart=True) as p:
+            p.feed('**"Hello"**')
+            p.feed(" -- world\n")
+            assert p.render_plaintext() == "“Hello” – world\n"
+
+    def test_render_plaintext_width(self):
+        with Parser() as p:
+            p.feed("word " * 50)
+            lines = p.render_plaintext(width=40).splitlines()
+            assert len(lines) > 1
+            assert all(len(line) <= 40 for line in lines)
+
+    @pytest.mark.parametrize("finished", [False, True])
+    def test_render_plaintext_after_close(self, finished):
+        p = Parser()
+        p.feed("hello")
+        if finished:
+            p.render_plaintext()
+        p.close()
+        with pytest.raises(ValueError, match="closed"):
+            p.render_plaintext()
+
 
 class TestParserLifecycle:
     """Parser lifecycle and error handling."""

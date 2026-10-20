@@ -12,6 +12,7 @@ from multimark._cmark import (
     markdown_to_man,
     markdown_to_commonmark,
     markdown_to_xml,
+    markdown_to_plaintext,
     cmark_version,
     VALID_EXTENSIONS,
 )
@@ -87,6 +88,7 @@ __all__ = [
     "markdown_to_man",
     "markdown_to_commonmark",
     "markdown_to_xml",
+    "markdown_to_plaintext",
     "markdown_to_html_batch",
     "cmark_version",
     "Options",

@@ -358,6 +358,20 @@ class TestNodeRendering:
         cm = doc.render_commonmark()
         assert "*italic*" in cm
 
+    def test_render_plaintext(self):
+        doc = parse("# Heading\n\n**bold** and *italic*\n")
+        assert doc.render_plaintext() == "Heading\n\nbold and italic\n"
+
+    def test_render_plaintext_subtree(self):
+        doc = parse("# Heading\n\n**bold** paragraph\n")
+        assert doc.last_child.render_plaintext() == "bold paragraph\n"
+
+    def test_render_plaintext_width(self):
+        doc = parse("word " * 50)
+        lines = doc.render_plaintext(width=40).splitlines()
+        assert len(lines) > 1
+        assert all(len(line) <= 40 for line in lines)
+
     def test_render_subtree(self):
         doc = parse("# Heading\n\nParagraph\n")
         para = doc.last_child

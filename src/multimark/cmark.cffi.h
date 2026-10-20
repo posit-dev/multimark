@@ -29,6 +29,7 @@ char *cmark_render_latex(cmark_node *root, int options, int width);
 char *cmark_render_man(cmark_node *root, int options, int width);
 char *cmark_render_commonmark(cmark_node *root, int options, int width);
 char *cmark_render_xml(cmark_node *root, int options);
+char *cmark_render_plaintext(cmark_node *root, int options, int width);
 
 const char *cmark_version_string(void);
 

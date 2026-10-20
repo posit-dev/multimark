@@ -48,9 +48,12 @@ Every renderer accepts these boolean keywords (all default to `False`):
 | `footnotes` | Enable footnote syntax (`[^label]`) |
 
 Additionally, `markdown_to_html` and `markdown_to_xml` accept `sourcepos` (include
-source position data in the output), while `markdown_to_latex`, `markdown_to_man`, and
-`markdown_to_commonmark` accept `width` (line wrapping column, where `0` means no
-wrapping).
+source position data in the output), while `markdown_to_latex`, `markdown_to_man`,
+`markdown_to_commonmark`, and `markdown_to_plaintext` accept `width` (line wrapping
+column, where `0` means no wrapping).
+
+For plaintext output, `unsafe` has no effect: raw HTML is always omitted, including
+the contents of raw HTML blocks. `hardbreaks=True` disables width-based wrapping.
 
 ## The Options Enum
 

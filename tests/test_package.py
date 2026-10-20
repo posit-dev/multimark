@@ -4,6 +4,7 @@ from multimark import (
     markdown_to_man,
     markdown_to_commonmark,
     markdown_to_xml,
+    markdown_to_plaintext,
     cmark_version,
     Options,
     __version__,
@@ -34,6 +35,7 @@ def test_all_renderers_return_str():
     assert isinstance(markdown_to_man(md), str)
     assert isinstance(markdown_to_commonmark(md), str)
     assert isinstance(markdown_to_xml(md), str)
+    assert isinstance(markdown_to_plaintext(md), str)
 
 
 def test_options_is_intflag():

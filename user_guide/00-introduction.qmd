@@ -11,7 +11,7 @@ This page gives you a high-level understanding of what multimark does, why it ex
 Multimark is a Python package that provides bindings to
 [cmark-gfm](https://github.com/github/cmark-gfm), GitHub's fork of the CommonMark
 reference parser. It gives you fast, spec-compliant Markdown parsing and rendering in
-five output formats: HTML, LaTeX, groff man pages, XML, and normalized CommonMark.
+six output formats: HTML, LaTeX, groff man pages, XML, normalized CommonMark, and plain text.
 
 The C library is vendored and compiled at install time via CFFI, so there are no system
 dependencies to manage. You get a single `pip install` and immediate access to the same
@@ -32,7 +32,7 @@ requests.
 
 ## Output Formats at a Glance
 
-Multimark renders parsed Markdown into five distinct formats, each suited to different
+Multimark renders parsed Markdown into six distinct formats, each suited to different
 use cases.
 
 ::: {.details .open summary="Available formats" icon="file-output"}
@@ -44,6 +44,7 @@ use cases.
 | Man page | `markdown_to_man()` | Unix manual pages |
 | XML | `markdown_to_xml()` | AST inspection, toolchain integration |
 | CommonMark | `markdown_to_commonmark()` | Normalization, round-trip formatting |
+| Plain text | `markdown_to_plaintext()` | Readable text without most Markdown formatting |
 
 :::
 

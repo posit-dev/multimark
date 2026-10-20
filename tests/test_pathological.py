@@ -6,6 +6,7 @@ from multimark import (
     markdown_to_man,
     markdown_to_commonmark,
     markdown_to_xml,
+    markdown_to_plaintext,
 )
 
 ALL_RENDERERS = [
@@ -14,6 +15,7 @@ ALL_RENDERERS = [
     markdown_to_man,
     markdown_to_commonmark,
     markdown_to_xml,
+    markdown_to_plaintext,
 ]
 
 

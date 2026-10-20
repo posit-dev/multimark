@@ -8,6 +8,7 @@ from multimark import (
     markdown_to_man,
     markdown_to_commonmark,
     markdown_to_xml,
+    markdown_to_plaintext,
     Options,
 )
 
@@ -76,7 +77,7 @@ def test_xml_bool_combos(kwargs):
     assert "<?xml" in result
 
 
-# For latex/man/commonmark, remove sourcepos (not accepted) — use subset
+# Width-capable renderers do not accept sourcepos.
 BOOL_FLAGS_NO_SOURCEPOS = ["hardbreaks", "smart", "normalize", "unsafe", "footnotes"]
 
 BOOL_COMBOS_WIDTH = [
@@ -137,7 +138,7 @@ def test_xml_sourcepos_combos(kwargs):
 
 
 # ---------------------------------------------------------------------------
-# Width parameter interactions (latex/man/commonmark)
+# Width parameter interactions
 # ---------------------------------------------------------------------------
 
 WIDTH_VALUES = [0, 20, 40, 72, 80, 120]
@@ -146,6 +147,7 @@ WIDTH_RENDERERS = [
     ("latex", markdown_to_latex),
     ("man", markdown_to_man),
     ("commonmark", markdown_to_commonmark),
+    ("plaintext", markdown_to_plaintext),
 ]
 
 

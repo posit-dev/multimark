@@ -491,6 +491,22 @@ class Node:
         lib.free(result_ptr)
         return result
 
+    def render_plaintext(self, *, width: int = 0) -> str:
+        """Render this subtree as plain text using `markdown_to_plaintext` rules.
+
+        `width` sets the approximate wrapping column; `0` disables automatic
+        wrapping. Parsing options such as smart punctuation and extensions must
+        be set when creating the tree. Output includes a trailing newline.
+        """
+        self._check_alive()
+        result_ptr = lib.cmark_render_plaintext(self._ptr, 0, width)
+        if result_ptr == ffi.NULL:
+            raise MemoryError("Failed to render")
+        try:
+            return ffi.string(result_ptr).decode("utf-8", errors="replace")
+        finally:
+            lib.free(result_ptr)
+
     # -- Dunder methods --
 
     def __repr__(self) -> str:

@@ -155,7 +155,7 @@ requested extensions before processing the input.
 
 ## Extensions with Other Renderers
 
-GFM extensions work with all five output formats, not just HTML. Here is the same table
+GFM extensions work with all six output formats, not just HTML. Here is the same table
 rendered as LaTeX.
 
 ```{python}

@@ -27,7 +27,15 @@ multimark README.md
 ## Choosing an Output Format
 
 Use the `-t` / `--to` flag to select the output format. The available formats are
-`html` (the default), `latex`, `man`, `commonmark`, and `xml`.
+`html` (the default), `latex`, `man`, `commonmark`, `xml`, and `plaintext`.
+
+```bash
+echo '**bold** and *italic*' | multimark --to plaintext
+```
+
+```text
+bold and italic
+```
 
 ```bash
 echo '# Hello' | multimark --to latex
@@ -92,6 +100,11 @@ Several flags control how the Markdown is parsed and rendered:
 | `--hardbreaks` | Render soft line breaks as hard breaks |
 | `--sourcepos` | Add source position attributes (html and xml only) |
 | `--footnotes` | Enable footnote syntax |
+| `--width` | Approximate wrapping column (latex, man, commonmark, plaintext; `0` disables wrapping) |
+
+For plaintext, `--hardbreaks` disables width-based wrapping. Raw HTML blocks and
+their contents are always omitted, even with `--unsafe`. Lists and some GFM
+markers remain; see [Plain Text](04-output-formats.qmd#plain-text) for details.
 
 These can be combined freely:
 
@@ -147,7 +160,7 @@ Usage: multimark [OPTIONS] [FILE]
   output to stdout or the file specified by --output.
 
 Options:
-  -t, --to [html|latex|man|commonmark|xml]
+  -t, --to [html|latex|man|commonmark|xml|plaintext]
                                   Output format.
   -o, --output FILENAME           Output file (stdout if omitted).
   -e, --extension [autolink|strikethrough|table|tagfilter|tasklist]
@@ -158,6 +171,8 @@ Options:
   --sourcepos                     Include source position attributes (html/xml
                                   only).
   --footnotes                     Enable footnote parsing.
+  --width INTEGER                 Wrap output at this column width
+                                  (latex/man/commonmark/plaintext only).
   --version                       Show the version and exit.
   --help                          Show this message and exit.
 ```
