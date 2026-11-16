@@ -113,13 +113,27 @@ html = markdown_to_html(text, extensions=["table", "strikethrough", "autolink", 
 
 Available extensions: `table`, `strikethrough`, `autolink`, `tagfilter`, `tasklist`.
 
+## TeX Math
+
+The `math` extension (not part of GFM) recognizes `$...$` and `$$...$$` math with
+Pandoc's delimiter rules, so dollar amounts like `$5` stay text. HTML output uses the
+markup that MathJax and KaTeX look for:
+
+```python
+markdown_to_html("Euler: $e^{i\\pi} + 1 = 0$, costing $5", extensions=["math"])
+# '<p>Euler: <span class="math inline">\\(e^{i\\pi} + 1 = 0\\)</span>, costing $5</p>\n'
+```
+
+LaTeX output uses `\(...\)` and `\[...\]`; the CommonMark, man, and plaintext renderers
+keep the dollar delimiters.
+
 ## All Renderer Parameters
 
 Every renderer accepts:
 
 - **`text`**: Markdown string
 - **`options`**: raw bitmask (default `0`)
-- **`extensions`**: list of GFM extension names (default `()`)
+- **`extensions`**: list of extension names (default `()`)
 - **`smart`**: smart punctuation
 - **`hardbreaks`**: render soft breaks as `<br>`
 - **`unsafe`**: allow raw HTML (no effect on plaintext output)
