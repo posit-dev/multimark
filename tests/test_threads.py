@@ -78,3 +78,24 @@ def test_concurrent_mixed_renderers():
 
     assert len(results) == 500
     assert all(isinstance(r, str) for r in results)
+
+
+def test_concurrent_extensions():
+    """Parsers with different extensions don't change each other's output.
+
+    cmark-gfm enabled extension characters (such as `~` and `$`) in global
+    tables, so concurrent parsers switched them on and off for each other.
+    """
+    md = ("Text $x$ and ~~struck~~ at www.example.com. " * 100 + "\n\n") * 10
+    configs = [[], ["math"], ["strikethrough"], ["math", "strikethrough", "autolink"]]
+    expected = [markdown_to_html(md, extensions=exts) for exts in configs]
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        futures = [
+            (i, executor.submit(markdown_to_html, md, extensions=configs[i]))
+            for _ in range(50)
+            for i in range(len(configs))
+        ]
+        mismatches = sum(f.result() != expected[i] for i, f in futures)
+
+    assert mismatches == 0
