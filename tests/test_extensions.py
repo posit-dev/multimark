@@ -74,7 +74,9 @@ class TestValidExtensions:
     """Test extension name validation and the VALID_EXTENSIONS set."""
 
     def test_valid_extensions_set(self):
-        assert VALID_EXTENSIONS == {"table", "strikethrough", "autolink", "tagfilter", "tasklist"}
+        assert VALID_EXTENSIONS == {
+            "table", "strikethrough", "autolink", "tagfilter", "tasklist", "math"
+        }
 
     def test_unknown_extension_raises(self):
         with pytest.raises(ValueError, match="Unknown extension"):
