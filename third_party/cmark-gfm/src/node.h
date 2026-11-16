@@ -53,9 +53,14 @@ enum cmark_node__internal_flags {
   CMARK_NODE__LAST_LINE_BLANK = (1 << 1),
   CMARK_NODE__LAST_LINE_CHECKED = (1 << 2),
 
+  // multimark addition: set on the document root by the math extension so the
+  // CommonMark renderer escapes literal `$` in text (keeping round trips from
+  // turning plain dollars into math).
+  CMARK_NODE__ESCAPE_DOLLARS = (1 << 3),
+
   // Extensions can register custom flags by calling `cmark_register_node_flag`.
   // This is the starting value for the custom flags.
-  CMARK_NODE__REGISTER_FIRST = (1 << 3),
+  CMARK_NODE__REGISTER_FIRST = (1 << 4),
 };
 
 typedef uint16_t cmark_node_internal_flags;
