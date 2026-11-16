@@ -22,6 +22,15 @@
 
 // Functions to convert cmark_nodes to commonmark strings.
 
+// multimark addition: true if `node` belongs to a document parsed with the
+// math extension (see CMARK_NODE__ESCAPE_DOLLARS).
+static bool escape_dollars(cmark_node *node) {
+  while (node->parent) {
+    node = node->parent;
+  }
+  return (node->flags & CMARK_NODE__ESCAPE_DOLLARS) != 0;
+}
+
 static CMARK_INLINE void outc(cmark_renderer *renderer, cmark_node *node, 
                               cmark_escaping escape,
                               int32_t c, unsigned char nextc) {
@@ -38,6 +47,7 @@ static CMARK_INLINE void outc(cmark_renderer *renderer, cmark_node *node,
 	 c == '*' || c == '_' || c == '[' || c == ']' || c == '#' || c == '<' ||
          c == '>' || c == '\\' || c == '`' || c == '~' || c == '!' ||
          (c == '&' && cmark_isalpha(nextc)) || (c == '!' && nextc == '[') ||
+         (c == '$' && escape_dollars(node)) ||
          (renderer->begin_content && (c == '-' || c == '+' || c == '=') &&
           // begin_content doesn't get set to false til we've passed digits
           // at the beginning of line, so...
