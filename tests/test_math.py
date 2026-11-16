@@ -117,6 +117,13 @@ class TestRenderers:
             "Let \\(a<b\\) and \\[\\sum_i x_i\\] cost \\$5.\n"
         )
 
+    def test_latex_display_math_inline_in_table_cell(self):
+        # `\[...\]` isn't allowed in a tabular cell, so it's set inline (as in Pandoc).
+        md = "| a | b |\n|---|---|\n| $$x$$ | **$$y$$** |\n"
+        out = markdown_to_latex(md, extensions=["math", "table"])
+        assert "\\(x\\) & \\textbf{\\(y\\)} \\\\" in out
+        assert "\\[" not in out
+
     def test_man(self):
         assert markdown_to_man(self.MD, extensions=MATH) == (
             ".PP\nLet $a<b$ and $$\\esum_i x_i$$ cost $5.\n"
