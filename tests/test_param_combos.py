@@ -187,7 +187,7 @@ GFM_MARKDOWN = """\
 - [x] Done
 - [ ] Todo
 
-This is ~~deleted~~ text.
+This is ~~deleted~~ text with $x^2$ and $$\\int f$$.
 """
 
 EXTENSION_COMBOS = [
@@ -199,6 +199,8 @@ EXTENSION_COMBOS = [
     ["table", "strikethrough"],
     ["table", "autolink", "tasklist"],
     ["table", "strikethrough", "autolink", "tagfilter", "tasklist"],
+    ["math"],
+    ["table", "strikethrough", "autolink", "tagfilter", "tasklist", "math"],
 ]
 
 FLAG_COMBOS_FOR_EXT = [
