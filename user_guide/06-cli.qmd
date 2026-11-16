@@ -73,17 +73,17 @@ Use `-o` / `--output` to write results to a file instead of stdout:
 multimark README.md --to html -o README.html
 ```
 
-## Enabling GFM Extensions
+## Enabling Extensions
 
-GFM extensions are enabled with the `-e` / `--extension` flag. It can be repeated to
+Extensions are enabled with the `-e` / `--extension` flag. It can be repeated to
 enable multiple extensions at once.
 
 ```bash
 echo '| A | B |\n|---|---|\n| 1 | 2 |' | multimark -e table
 ```
 
-The available extensions are `autolink`, `strikethrough`, `table`, `tagfilter`, and
-`tasklist`.
+The available extensions are the GFM extensions `autolink`, `strikethrough`, `table`,
+`tagfilter`, and `tasklist`, plus `math` for TeX math.
 
 ```bash
 multimark doc.md -e table -e strikethrough -e autolink
@@ -163,8 +163,8 @@ Options:
   -t, --to [html|latex|man|commonmark|xml|plaintext]
                                   Output format.
   -o, --output FILENAME           Output file (stdout if omitted).
-  -e, --extension [autolink|strikethrough|table|tagfilter|tasklist]
-                                  Enable a GFM extension (repeatable).
+  -e, --extension [autolink|math|strikethrough|table|tagfilter|tasklist]
+                                  Enable an extension (repeatable).
   --smart                         Use smart punctuation.
   --unsafe                        Allow raw HTML and dangerous URLs.
   --hardbreaks                    Render softbreaks as hard line breaks.
