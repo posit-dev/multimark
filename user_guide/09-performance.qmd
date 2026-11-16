@@ -2,7 +2,7 @@
 title: "Performance"
 guide-section: "Advanced Usage"
 tags: [Performance]
-freeze: auto
+freeze: true
 ---
 
 This page benchmarks multimark against other popular Python Markdown parsers and
