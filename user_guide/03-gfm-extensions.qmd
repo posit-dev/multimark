@@ -4,7 +4,7 @@ guide-section: "Core Concepts"
 tags: [Extensions, HTML, Tables]
 ---
 
-This page explains the five GitHub Flavored Markdown extensions that multimark supports, with examples showing how each one works and how to combine them.
+This page explains the five GitHub Flavored Markdown extensions that multimark supports, plus its TeX math extension, with examples showing how each one works and how to combine them.
 
 ## What Are GFM Extensions?
 
@@ -13,8 +13,9 @@ syntax features. These are the constructs that GitHub recognizes in README files
 and pull requests but that are not part of the base CommonMark spec.
 
 Multimark supports all five GFM extensions through the `extensions` parameter, which
-accepts a sequence of extension names. Extensions are disabled by default so that the
-parser remains strictly CommonMark-compliant unless you opt in.
+accepts a sequence of extension names. It also provides a `math` extension for TeX math
+(see [TeX Math](#tex-math) below). Extensions are disabled by default so that the parser
+remains strictly CommonMark-compliant unless you opt in.
 
 ```{python}
 from multimark import VALID_EXTENSIONS
@@ -125,6 +126,69 @@ print(markdown_to_html(tasks, extensions=["tasklist"]))
 The checkboxes are rendered as `<input>` elements with `type="checkbox"` and a
 `disabled` attribute (since they are static content, not interactive form elements).
 
+## TeX Math
+
+The `math` extension isn't part of GFM. It recognizes TeX math between dollar signs:
+`$...$` for inline math and `$$...$$` for display math. The HTML output uses the markup
+that [MathJax](https://www.mathjax.org) and [KaTeX](https://katex.org) look for, so the
+math is typeset once either library is loaded on the page.
+
+```{python}
+print(markdown_to_html(r"Euler: $e^{i\pi} + 1 = 0$, and $$\int_0^1 x\,dx = \tfrac{1}{2}$$", extensions=["math"]))
+```
+
+The TeX is kept as written, with no Markdown processing inside it. Characters such as
+`*`, `_`, and `\` keep their TeX meaning instead of starting emphasis or escapes.
+
+```{python}
+print(markdown_to_html(r"$a_1 * b_1$ and $\{x\}$", extensions=["math"]))
+```
+
+The delimiter rules are those of Pandoc's `tex_math_dollars` extension, so ordinary
+dollar amounts stay as text:
+
+- An inline opening `$` must be followed by a non-space character, and the closing `$`
+  must be preceded by a non-space character and not followed by a digit.
+- Display math may have spaces and line breaks just inside its `$$` delimiters.
+- A backslash escapes the next character, so `\$` doesn't end the math.
+- Math can't span a blank line.
+
+```{python}
+print(markdown_to_html("It costs $5 or $10, while $x$ is a variable.", extensions=["math"]))
+```
+
+Math is recognized while parsing a paragraph, so a `$$` span can't cross a block
+boundary. If a line inside it would start a new block (a list item, a heading, a block
+quote), the paragraph ends there and the `$$` stays literal text. Start such lines with
+something else. As in any paragraph, the indentation of continuation lines is removed.
+
+Other output formats render math as follows:
+
+| Format | Inline | Display |
+|--------|--------|---------|
+| HTML | `<span class="math inline">\(...\)</span>` | `<span class="math display">\[...\]</span>` |
+| LaTeX | `\(...\)` | `\[...\]` |
+| CommonMark | `$...$` | `$$...$$` |
+| man, plaintext | `$...$` | `$$...$$` |
+| XML | `<math type="inline">` | `<math type="display">` |
+
+With `math` enabled, the CommonMark renderer also escapes literal dollar signs as `\$`,
+so its output parses back to the same document.
+
+In the AST, a math node has the type string `"math"` and holds its TeX in a single text
+child. The `Node.math_display` property tells display math from inline math.
+
+```{python}
+from multimark import parse
+
+root = parse(r"$x$ and $$\sum_i y_i$$", extensions=["math"])
+[
+    (node.math_display, node.first_child.literal)
+    for event, node in root.walk()
+    if event == "enter" and node.type_string == "math"
+]
+```
+
 ## Combining Extensions
 
 Extensions compose freely. Enable as many as you need by passing multiple names in the
@@ -155,7 +219,7 @@ requested extensions before processing the input.
 
 ## Extensions with Other Renderers
 
-GFM extensions work with all six output formats, not just HTML. Here is the same table
+Extensions work with all six output formats, not just HTML. Here is the same table
 rendered as LaTeX.
 
 ```{python}
