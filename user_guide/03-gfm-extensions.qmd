@@ -157,6 +157,10 @@ dollar amounts stay as text:
 print(markdown_to_html("It costs $5 or $10, while $x$ is a variable.", extensions=["math"]))
 ```
 
+Those dollar signs stay in the HTML, so keep MathJax and KaTeX on their default
+delimiters, which don't include single `$`. If you configure either library to treat
+`$...$` as math, it will typeset `$5 or $` in the example above.
+
 Math is recognized while parsing a paragraph, so a `$$` span can't cross a block
 boundary. If a line inside it would start a new block (a list item, a heading, a block
 quote), the paragraph ends there and the `$$` stays literal text. Start such lines with
