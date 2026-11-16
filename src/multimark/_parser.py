@@ -26,7 +26,7 @@ class Parser:
     footnotes
         Enable footnote syntax. Default `False`.
     extensions
-        GFM extensions to enable (e.g., `["table", "strikethrough"]`).
+        Extensions to enable (e.g., `["table", "strikethrough", "math"]`).
     options
         Raw `Options` bitmask, OR'd with boolean kwargs.
 
