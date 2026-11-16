@@ -47,6 +47,12 @@ bool cmark_gfm_extensions_get_tasklist_item_checked(cmark_node *node);
 CMARK_GFM_EXPORT
 int cmark_gfm_extensions_set_tasklist_item_checked(cmark_node *node, bool is_checked);
 
+/** Returns true if the node is display math (`$$...$$`), false for inline math
+ * and any other node. (multimark addition.)
+ */
+CMARK_GFM_EXPORT
+bool cmark_gfm_extensions_get_math_display(cmark_node *node);
+
 #ifdef __cplusplus
 }
 #endif
