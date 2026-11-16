@@ -128,6 +128,7 @@ static void cmark_parser_reset(cmark_parser *parser) {
 
   memset(parser, 0, sizeof(cmark_parser));
   parser->mem = saved_mem;
+  cmark_inlines_reset_special_characters(parser);
 
   cmark_strbuf_init(parser->mem, &parser->curline, 256);
   cmark_strbuf_init(parser->mem, &parser->linebuf, 0);
@@ -416,18 +417,24 @@ static cmark_node *add_child(cmark_parser *parser, cmark_node *parent,
   return child;
 }
 
+// multimark: set the extension characters in this parser's own tables.
+// Upstream toggled them in global tables, so a parser finishing in one thread
+// could disable another thread's extensions mid-parse.
 void cmark_manage_extensions_special_characters(cmark_parser *parser, int add) {
   cmark_llist *tmp_ext;
+
+  cmark_inlines_reset_special_characters(parser);
+  if (!add)
+    return;
 
   for (tmp_ext = parser->inline_syntax_extensions; tmp_ext; tmp_ext=tmp_ext->next) {
     cmark_syntax_extension *ext = (cmark_syntax_extension *) tmp_ext->data;
     cmark_llist *tmp_char;
     for (tmp_char = ext->special_inline_chars; tmp_char; tmp_char=tmp_char->next) {
       unsigned char c = (unsigned char)(size_t)tmp_char->data;
-      if (add)
-        cmark_inlines_add_special_character(c, ext->emphasis);
-      else
-        cmark_inlines_remove_special_character(c, ext->emphasis);
+      parser->special_chars[c] = 1;
+      if (ext->emphasis)
+        parser->skip_chars[c] = 1;
     }
   }
 }
