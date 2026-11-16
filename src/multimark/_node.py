@@ -318,6 +318,16 @@ class Node:
         if rc == 0:
             raise ValueError("Cannot set fence info on this node type")
 
+    @property
+    def math_display(self) -> bool:
+        """Whether a `math` node is display math (`$$...$$`).
+
+        `False` for inline math (`$...$`) and for all other node types. A math node's
+        TeX source is the `literal` of its single text child.
+        """
+        self._check_alive()
+        return bool(lib.cmark_gfm_extensions_get_math_display(self._ptr))
+
     # -- Source positions --
 
     @property
@@ -565,7 +575,7 @@ def parse(
     footnotes
         Enable footnote syntax. Default `False`.
     extensions
-        GFM extensions to enable.
+        Extensions to enable (e.g., `["table", "math"]`).
     options
         Raw `Options` bitmask.
 

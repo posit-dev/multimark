@@ -46,7 +46,7 @@ RENDERERS = {
     "extensions",
     multiple=True,
     type=click.Choice(sorted(VALID_EXTENSIONS), case_sensitive=False),
-    help="Enable a GFM extension (repeatable).",
+    help="Enable an extension (repeatable).",
 )
 @click.option("--smart", is_flag=True, help="Use smart punctuation.")
 @click.option("--unsafe", is_flag=True, help="Allow raw HTML and dangerous URLs.")

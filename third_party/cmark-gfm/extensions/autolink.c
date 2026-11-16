@@ -482,7 +482,9 @@ static cmark_node *postprocess(cmark_syntax_extension *ext, cmark_parser *parser
       continue;
     }
 
-    if (ev == CMARK_EVENT_ENTER && node->type == CMARK_NODE_TEXT) {
+    // multimark: skip text owned by another extension (the TeX inside math).
+    if (ev == CMARK_EVENT_ENTER && node->type == CMARK_NODE_TEXT &&
+        !node->extension) {
       postprocess_text(parser, node);
     }
   }

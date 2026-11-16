@@ -33,6 +33,7 @@ pip install multimark
 | Enable strikethrough | `markdown_to_html(text, extensions=["strikethrough"])` |
 | Enable autolinks | `markdown_to_html(text, extensions=["autolink"])` |
 | Enable task lists | `markdown_to_html(text, extensions=["tasklist"])` |
+| Enable TeX math (`$...$`, `$$...$$`) | `markdown_to_html(text, extensions=["math"])` |
 | Combine multiple options | `markdown_to_html(text, options=Options.SMART \| Options.UNSAFE)` |
 | Check bundled cmark-gfm version | `cmark_version()` |
 
@@ -57,7 +58,7 @@ html = markdown_to_html(text, smart=True, unsafe=True, extensions=["table", "aut
 | `sourcepos` | `bool` | `False` | Add source position attributes (HTML/XML only) |
 | `unsafe` | `bool` | `False` | Allow raw HTML passthrough |
 | `footnotes` | `bool` | `False` | Enable `[^label]` footnote syntax |
-| `extensions` | `Sequence[str]` | `()` | GFM extensions to enable |
+| `extensions` | `Sequence[str]` | `()` | Extensions to enable |
 | `options` | `int` | `0` | Bitmask of `Options` flags |
 
 ### Additional parameter (LaTeX, man, CommonMark renderers only)
@@ -78,9 +79,9 @@ opts = Options.SMART | Options.UNSAFE | Options.FOOTNOTES
 opts = Options.GITHUB_PRE_LANG | Options.STRIKETHROUGH_DOUBLE_TILDE | Options.LIBERAL_HTML_TAG
 ```
 
-### Valid GFM extensions
+### Valid extensions
 
-The only valid extension names are: `"table"`, `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`.
+The only valid extension names are the GFM extensions `"table"`, `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, plus `"math"` (TeX math with Pandoc's `$` rules; not part of GFM).
 
 ## Gotchas
 
@@ -131,7 +132,7 @@ multimark --version
 |--------|-------|-------------|
 | `--to FORMAT` | `-t` | Output format: `html` (default), `latex`, `man`, `commonmark`, `xml` |
 | `--output FILE` | `-o` | Write to FILE instead of stdout |
-| `--extension EXT` | `-e` | Enable a GFM extension (repeatable) |
+| `--extension EXT` | `-e` | Enable an extension (repeatable) |
 | `--smart` | | Typographic quotes, dashes, ellipses |
 | `--unsafe` | | Allow raw HTML passthrough |
 | `--hardbreaks` | | Render soft newlines as hard line breaks |

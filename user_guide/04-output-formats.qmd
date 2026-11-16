@@ -203,6 +203,7 @@ This uses cmark-gfm's readable plaintext format, not strict removal of all marku
 - GFM tables retain pipe-table syntax.
 - Task lists retain `[x]` and `[ ]` markers.
 - Strikethrough text is surrounded by single tildes, such as `~deleted~`.
+- Math from the `math` extension keeps its TeX between `$` or `$$` delimiters.
 - Enabled footnotes retain numbered references and definitions.
 - Inline HTML tags are omitted; raw HTML blocks are omitted **including their text**.
   `unsafe=True` does not change this behavior.
@@ -220,6 +221,21 @@ Explicit hard line breaks remain newlines, and code blocks are never wrapped.
 ```{python}
 print(markdown_to_plaintext("A paragraph with **bold** text. " * 5, width=60))
 ```
+
+## Math in Each Format
+
+With the `math` extension enabled, each renderer writes TeX math in its own way. HTML
+and LaTeX use the `\(...\)` and `\[...\]` delimiters (HTML wraps them in `<span>`
+elements for MathJax or KaTeX), while the text-based formats keep the dollar signs.
+
+```{python}
+math_doc = r"The area is $\pi r^2$, or $$A = \pi r^2$$"
+
+for render in [markdown_to_html, markdown_to_latex, markdown_to_commonmark, markdown_to_plaintext]:
+    print(render(math_doc, extensions=["math"]))
+```
+
+See [TeX Math](03-gfm-extensions.qmd#tex-math) for the delimiter rules.
 
 ## Choosing a Format
 

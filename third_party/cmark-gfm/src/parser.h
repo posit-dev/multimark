@@ -50,6 +50,11 @@ struct cmark_parser {
   cmark_llist *syntax_extensions;
   cmark_llist *inline_syntax_extensions;
   cmark_ispunct_func backslash_ispunct;
+  /* multimark: this parser's inline special and skip characters, filled in
+     before inline parsing. Upstream toggles extension characters in global
+     tables, so concurrent parsers raced each other. */
+  int8_t special_chars[256];
+  int8_t skip_chars[256];
 };
 
 #ifdef __cplusplus

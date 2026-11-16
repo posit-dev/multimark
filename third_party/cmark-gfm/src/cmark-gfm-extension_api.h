@@ -630,6 +630,15 @@ int cmark_inline_parser_get_offset(cmark_inline_parser *parser);
 CMARK_GFM_EXPORT
 void cmark_inline_parser_set_offset(cmark_inline_parser *parser, int offset);
 
+/** Like cmark_inline_parser_set_offset, but also updates the parser's line
+ * and column bookkeeping for any newlines between the current offset and
+ * 'offset', so source positions stay correct after an extension consumes a
+ * span that crosses lines. 'offset' must not be before the current offset.
+ * (multimark addition, used by the math extension.)
+ */
+CMARK_GFM_EXPORT
+void cmark_inline_parser_set_offset_multiline(cmark_inline_parser *parser, int offset);
+
 /** Gets the cmark_chunk being operated on by the given inline parser.
  * Use cmark_inline_parser_get_offset to get our current position in the chunk.
  */

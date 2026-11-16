@@ -114,6 +114,7 @@ int cmark_node_get_start_line(cmark_node *node);
 int cmark_node_get_start_column(cmark_node *node);
 int cmark_node_get_end_line(cmark_node *node);
 int cmark_node_get_end_column(cmark_node *node);
+_Bool cmark_gfm_extensions_get_math_display(cmark_node *node);
 
 /* Node creation and mutation */
 cmark_node *cmark_node_new(cmark_node_type type);
