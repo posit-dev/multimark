@@ -20,6 +20,7 @@
 // extension, so every renderer emits the TeX verbatim.
 
 #include "texmath.h"
+#include "table.h"
 #include <parser.h>
 #include <render.h>
 #include <html.h>
@@ -295,12 +296,22 @@ static void commonmark_render(cmark_syntax_extension *extension,
     renderer->out(renderer, node, cmark_node_get_literal(node), false, LITERAL);
 }
 
+static bool in_table_cell(cmark_node *node) {
+  for (node = node->parent; node; node = node->parent) {
+    if (node->type == CMARK_NODE_TABLE_CELL)
+      return true;
+  }
+  return false;
+}
+
+// Display math can't go in a tabular cell, so it's set inline there (as
+// Pandoc does).
 static void latex_render(cmark_syntax_extension *extension,
                          cmark_renderer *renderer, cmark_node *node,
                          cmark_event_type ev_type, int options) {
   bool entering = (ev_type == CMARK_EVENT_ENTER);
   if (node->type == CMARK_NODE_MATH) {
-    if (is_display(node))
+    if (is_display(node) && !in_table_cell(node))
       renderer->out(renderer, node, entering ? "\\[" : "\\]", false, LITERAL);
     else
       renderer->out(renderer, node, entering ? "\\(" : "\\)", false, LITERAL);

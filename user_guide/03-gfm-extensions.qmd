@@ -167,7 +167,7 @@ Other output formats render math as follows:
 | Format | Inline | Display |
 |--------|--------|---------|
 | HTML | `<span class="math inline">\(...\)</span>` | `<span class="math display">\[...\]</span>` |
-| LaTeX | `\(...\)` | `\[...\]` |
+| LaTeX | `\(...\)` | `\[...\]` (`\(...\)` in table cells) |
 | CommonMark | `$...$` | `$$...$$` |
 | man, plaintext | `$...$` | `$$...$$` |
 | XML | `<math type="inline">` | `<math type="display">` |
