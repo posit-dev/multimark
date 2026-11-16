@@ -7,9 +7,9 @@ from multimark._binding import ffi, lib
 # Register all built-in GFM extensions once at import time.
 lib.cmark_gfm_core_extensions_ensure_registered()
 
-# Valid extension names recognized by cmark-gfm.
+# Valid extension names: the GFM extensions plus multimark's TeX math extension.
 VALID_EXTENSIONS = frozenset(
-    ["table", "strikethrough", "autolink", "tagfilter", "tasklist"]
+    ["table", "strikethrough", "autolink", "tagfilter", "tasklist", "math"]
 )
 
 # Cache resolved extension pointers to avoid repeated C lookups.
@@ -94,8 +94,8 @@ def markdown_to_html(
     comment). Set `unsafe=True` to allow raw HTML passthrough.
 
     The parser is fully [CommonMark spec](https://spec.commonmark.org/) compliant. When
-    GFM extensions are enabled via `extensions=`, additional syntax is recognized
-    (tables, strikethrough, autolinks, tag filtering, and task lists).
+    extensions are enabled via `extensions=`, additional syntax is recognized
+    (tables, strikethrough, autolinks, tag filtering, task lists, and TeX math).
 
     Parameters
     ----------
@@ -133,8 +133,9 @@ def markdown_to_html(
         footnotes with backlinks. By default, this is `False`.
 
     extensions : Sequence[str]
-        A sequence of GFM extension names to enable during parsing. Valid names are
-        `"table"`, `"strikethrough"`, `"autolink"`, `"tagfilter"`, and `"tasklist"`.
+        A sequence of extension names to enable during parsing. Valid names are
+        `"table"`, `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, and
+        `"math"`.
         An empty sequence (the default) parses standard CommonMark only.
 
     options : int
@@ -280,8 +281,8 @@ def markdown_to_xml(
         Enable footnote syntax parsing. By default, this is `False`.
 
     extensions : Sequence[str]
-        A sequence of GFM extension names to enable. Valid names are `"table"`,
-        `"strikethrough"`, `"autolink"`, `"tagfilter"`, and `"tasklist"`.
+        A sequence of extension names to enable. Valid names are `"table"`,
+        `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, and `"math"`.
 
     options : int
         An integer bitmask of `Options` flags (e.g., `Options.SMART | Options.UNSAFE`).
@@ -391,8 +392,8 @@ def markdown_to_latex(
         Enable footnote syntax parsing. By default, this is `False`.
 
     extensions : Sequence[str]
-        A sequence of GFM extension names to enable. Valid names are `"table"`,
-        `"strikethrough"`, `"autolink"`, `"tagfilter"`, and `"tasklist"`.
+        A sequence of extension names to enable. Valid names are `"table"`,
+        `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, and `"math"`.
 
     width : int
         The column at which to wrap output lines. Set to `0` (the default) to disable
@@ -519,8 +520,8 @@ def markdown_to_man(
         Enable footnote syntax parsing. By default, this is `False`.
 
     extensions : Sequence[str]
-        A sequence of GFM extension names to enable. Valid names are `"table"`,
-        `"strikethrough"`, `"autolink"`, `"tagfilter"`, and `"tasklist"`.
+        A sequence of extension names to enable. Valid names are `"table"`,
+        `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, and `"math"`.
 
     width : int
         The column at which to wrap output lines. Set to `0` (the default) to disable
@@ -642,8 +643,8 @@ def markdown_to_commonmark(
         Enable footnote syntax parsing. By default, this is `False`.
 
     extensions : Sequence[str]
-        A sequence of GFM extension names to enable. Valid names are `"table"`,
-        `"strikethrough"`, `"autolink"`, `"tagfilter"`, and `"tasklist"`.
+        A sequence of extension names to enable. Valid names are `"table"`,
+        `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, and `"math"`.
 
     width : int
         The column at which to wrap output lines. Set to `0` (the default) to disable
@@ -743,9 +744,10 @@ def markdown_to_plaintext(
     separated by blank lines.
 
     GFM tables retain pipe-table syntax, task lists retain checkbox markers, and
-    strikethrough text is surrounded by single tildes. Enabled footnotes retain
-    numbered references and definitions. Raw HTML blocks, including their text,
-    are omitted; inline HTML tags are omitted without removing surrounding text.
+    strikethrough text is surrounded by single tildes. Math keeps its TeX source
+    between `$` or `$$` delimiters. Enabled footnotes retain numbered references
+    and definitions. Raw HTML blocks, including their text, are omitted; inline
+    HTML tags are omitted without removing surrounding text.
 
     Parameters
     ----------
@@ -771,8 +773,8 @@ def markdown_to_plaintext(
         Enable footnote syntax parsing. By default, this is `False`.
 
     extensions : Sequence[str]
-        A sequence of GFM extension names to enable. Valid names are `"table"`,
-        `"strikethrough"`, `"autolink"`, `"tagfilter"`, and `"tasklist"`.
+        A sequence of extension names to enable. Valid names are `"table"`,
+        `"strikethrough"`, `"autolink"`, `"tagfilter"`, `"tasklist"`, and `"math"`.
 
     width : int
         The column at which to wrap output lines. Set to `0` (the default) to disable
